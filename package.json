@@ -1,8 +1,8 @@
 {
-  "name": "Lavan",
-  "private": true,
+  "name": "lavan",
   "type": "module",
-
+  "version": "1.1.1",
+  "private": true,
   "exports": {
     ".": {
       "types": "./dist/types.d.mts",
@@ -20,37 +20,48 @@
     "*.d.ts"
   ],
   "scripts": {
+    "god": "pnpm install && pnpm prepack && pnpm dev:prepare && pnpm dev",
+    "gods": "pnpm install && pnpm prepack && pnpm dev:prepare && pnpm build",
     "prepack": "nuxt-module-build prepare && nuxt-module-build build",
-    "dev": "nuxi dev playground",
-    "dev:generate": "nuxi generate playground",
-    "dev:generate:netlify": "NITRO_PRESET=netlify nuxi generate playground",
-    "dev:generate:vercel": "NITRO_PRESET=vercel nuxi generate playground",
-    "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
-    "dev:preview:build": "nr dev:build && node playground/.output/server/index.mjs",
-    "dev:preview:generate": "nr dev:generate && serve playground/dist",
+    "dev": "nuxi dev",
+    "dev:generate": "nuxi generate",
+    "dev:generate:netlify": "NITRO_PRESET=netlify nuxi generate",
+    "dev:generate:vercel": "NITRO_PRESET=vercel nuxi generate",
+    "dev:build": "nuxi build",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare",
+    "dev:preview:build": "pnpm dev:build && node .output/server/index.mjs",
+    "dev:preview:generate": "pnpm dev:generate && serve dist",
     "release": "bumpp && npm publish",
     "lint": "eslint .",
-    "lint-fix": "nr lint --fix",
-    "test:build:serve": "PORT=4173 node playground/.output/server/index.mjs",
-    "test:generate:serve": "PORT=4173 serve playground/dist",
-    "test:build": "nr dev:build && TEST_BUILD=true vitest run && TEST_BUILD=true playwright test",
-    "test:generate": "nr dev:generate && vitest run && playwright test",
-    "test": "nr test:build && nr test:generate",
-    "test:with-build": "nr dev:prepare && nr prepack && nr test",
+    "lint-fix": "pnpm lint --fix",
+    "test:build:serve": "PORT=4173 node .output/server/index.mjs",
+    "test:generate:serve": "PORT=4173 serve dist",
+    "test:build": "pnpm dev:build && TEST_BUILD=true vitest run && TEST_BUILD=true playwright test",
+    "test:generate": "pnpm dev:generate && vitest run && playwright test",
+    "test": "pnpm test:build && pnpm test:generate",
+    "test:with-build": "pnpm dev:prepare && pnpm prepack && pnpm test",
     "dev-sw": "SW=true nuxi dev",
     "build": "nuxi build",
     "build-sw": "SW=true nuxi build",
-    "generate": "nuxi generate"
+    "generate": "nuxi generate",
+    "start": "node .output/server/index.mjs"
+  },
+  "peerDependencies": {
+    "@vite-pwa/assets-generator": "^0.2.4"
+  },
+  "peerDependenciesMeta": {
+    "@vite-pwa/assets-generator": {
+      "optional": true
+    }
   },
   "dependencies": {
-    "@vite-pwa/nuxt": "^0.9.1",
-    "nuxt": "^3.12.4",
     "@nuxt/kit": "^3.9.0",
-    "vue": "latest",
+    "@vite-pwa/nuxt": "^0.9.1",
+    "nuxt": "^3.10.1",
     "pathe": "^1.1.1",
     "ufo": "^1.3.2",
-    "vite-plugin-pwa": ">=0.20.0 <1"
+    "vite-plugin-pwa": ">=0.20.0 <1",
+    "vue": "latest"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.43.1",
@@ -73,14 +84,6 @@
   "resolutions": {
     "@nuxt/kit": "^3.10.1"
   },
-  "peerDependencies": {
-    "@vite-pwa/assets-generator": "^0.2.4"
-  },
-  "peerDependenciesMeta": {
-    "@vite-pwa/assets-generator": {
-      "optional": true
-    }
-  },
   "build": {
     "externals": [
       "node:child_process",
@@ -95,6 +98,6 @@
     ]
   },
   "stackblitz": {
-    "startCommand": "nr prepack && nr dev:prepare && nr dev"
+    "startCommand": "pnpm prepack && pnpm dev:prepare && pnpm dev"
   }
 }

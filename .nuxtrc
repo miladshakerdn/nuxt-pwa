@@ -1,2 +1,2 @@
-typescript.includeWorkspace=true
-typescript.tsConfig.exclude[]=../playground
+typescript.includeWorkspace=false
+typescript.tsConfig.exclude[]=src/runtime
